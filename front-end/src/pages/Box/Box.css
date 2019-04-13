@@ -9,6 +9,8 @@
   align-items: center;
 }
 
+
+
 .box-container header h1 {
   font-size: 21px;
   padding-left: 15px;
@@ -16,6 +18,9 @@
   border-left: 1px solid #ddd;
 }
 
+.box-container header img {
+  width: 25%;
+}
 .box-container header button svg {
   margin-right: 10px;
 }

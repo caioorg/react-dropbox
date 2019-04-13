@@ -1,18 +1,27 @@
 import React, { Component } from 'react';
 import { MdInsertDriveFile } from 'react-icons/md'
 import DropZone from 'react-dropzone'
+import socket from 'socket.io-client'
 
 import { distanceInWords } from 'date-fns'
 import pt from 'date-fns/locale/pt'
 
 import api from '../../services/api'
 
-import logo from './assets/logo.svg'
+import logo from './assets/logo.png'
 import './Box.css'
 
 export default class Box extends Component {
   state = {
     list: []
+  }
+
+  async componentDidMount() {
+    this.subscribeToNewFiles()
+
+    const id = this.props.match.params.id
+    const response = await api.get(`boxes/${id}`)
+    this.setState({ list: response.data })
   }
 
   handleUpload = files => {
@@ -26,10 +35,15 @@ export default class Box extends Component {
     })
   }
 
-  async componentDidMount() {
+  subscribeToNewFiles = () => {
     const id = this.props.match.params.id
-    const response = await api.get(`boxes/${id}`)
-    this.setState({ list: response.data })
+    const io = socket('http://localhost:3333')
+
+    io.emit('connectRoom', id)
+
+    io.on('file', data => {
+      this.setState({ list: { ...this.state.list, files: [ data, ...this.state.list.files, ] }})
+    })
   }
 
   render() {
