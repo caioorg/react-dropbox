@@ -50,6 +50,9 @@ export default class Box extends Component {
     return (
       <div className="box-container">
         <header>
+          <a className="back-page" href="/">
+            Voltar
+          </a>
           <img src={ logo } alt="" />
           <h1>{ this.state.list.title }</h1>
         </header>
