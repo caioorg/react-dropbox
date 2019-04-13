@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { MdInsertDriveFile } from 'react-icons/md'
+import DropZone from 'react-dropzone'
+
 import { distanceInWords } from 'date-fns'
 import pt from 'date-fns/locale/pt'
 
@@ -11,6 +13,17 @@ import './Box.css'
 export default class Box extends Component {
   state = {
     list: []
+  }
+
+  handleUpload = files => {
+    files.forEach(item => {
+      const data = new FormData()
+      const id = this.props.match.params.id
+
+      data.append('file', item)
+
+      api.post(`boxes/${id}/upload-files`, data)
+    })
   }
 
   async componentDidMount() {
@@ -27,6 +40,18 @@ export default class Box extends Component {
           <h1>{ this.state.list.title }</h1>
         </header>
         <section>
+
+          <DropZone onDropAccepted={ this.handleUpload }>
+            {
+              ({ getInputProps, getRootProps }) => (
+                <div className="upload" { ...getRootProps() }>
+                  <input { ... getInputProps() } />
+                  <p>Arraste alguma arquivo ou clique aqui</p>
+                </div>
+              )
+            }
+          </DropZone>
+
           <ul>
             {
               this.state.list.files && this.state.list.files.map((item, index) => (
