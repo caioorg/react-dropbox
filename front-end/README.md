@@ -1,5 +1,5 @@
 
-React Dropbox
+React Dropbox / Front-End
 ======================================
 
 This project was based on a study of several technologies that the market is using in the area of development
